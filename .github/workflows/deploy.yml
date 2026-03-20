@@ -18,9 +18,9 @@ jobs:
         run: pnpm install
 
       - name: Build
-        run: pnpm build
+        run: pnpm exec nuxt generate
         env:
-          NUXT_PUBLIC_API_BASE: https://api.epro.uz/api/v1
+          NUXT_PUBLIC_API_BASE: https://api.epro.uz
 
       - name: Upload to VPS
         uses: appleboy/scp-action@master
