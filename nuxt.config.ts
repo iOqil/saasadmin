@@ -1,11 +1,11 @@
 export default defineNuxtConfig({
-  ssr: false,
+
   modules: [
     '@nuxt/eslint',
     '@nuxt/ui',
     '@vueuse/nuxt',
     '@pinia/nuxt',
-  ],
+  ], ssr: false,
 
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
@@ -29,5 +29,5 @@ export default defineNuxtConfig({
         braceStyle: '1tbs'
       }
     }
-  }
+  },
 })

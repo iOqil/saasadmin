@@ -13,6 +13,9 @@ export default withNuxt({
     '@stylistic/comma-dangle': 'off',
     '@stylistic/quotes': 'off',
     'import/first': 'off',
-    'no-empty': 'off'
+    'no-empty': 'off',
+    '@stylistic/semi': 'off',
+    '@stylistic/member-delimiter-style': 'off',
+    'vue/order-in-components': 'off'
   }
 })
