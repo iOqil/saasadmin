@@ -35,7 +35,7 @@ export interface TenantStats {
   total_students: number
   total_teachers: number
   monthly_revenue: number
-  by_plan?: { plan: string; count: number }[]
+  by_plan?: { plan: string, count: number }[]
 }
 
 interface Pagination {
@@ -67,11 +67,9 @@ export const useTenantStore = defineStore('tenant', () => {
       )
       tenants.value = res.data
       pagination.value = res.meta
-    }
-    catch (e: any) {
+    } catch (e: any) {
       error.value = e?.data?.message ?? 'Xatolik'
-    }
-    finally {
+    } finally {
       loading.value = false
     }
   }
@@ -83,8 +81,7 @@ export const useTenantStore = defineStore('tenant', () => {
         { headers: auth.authHeaders() }
       )
       stats.value = res.data
-    }
-    catch {}
+    } catch {}
   }
 
   async function fetchTenant(id: string) {
@@ -95,8 +92,7 @@ export const useTenantStore = defineStore('tenant', () => {
         { headers: auth.authHeaders() }
       )
       current.value = res.data
-    }
-    finally {
+    } finally {
       loading.value = false
     }
   }

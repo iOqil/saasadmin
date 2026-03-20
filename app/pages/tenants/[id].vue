@@ -27,13 +27,11 @@ async function toggleStatus() {
     if (tenant.value.status === 'active') {
       await tenantStore.suspendTenant(tenant.value.id)
       toast.add({ title: "Markaz to'xtatildi", color: 'warning' })
-    }
-    else {
+    } else {
       await tenantStore.activateTenant(tenant.value.id)
       toast.add({ title: 'Markaz faollashtirildi', color: 'success' })
     }
-  }
-  catch (e: any) {
+  } catch (e: any) {
     toast.add({ title: e?.data?.message ?? 'Xatolik', color: 'error' })
   }
 }
@@ -61,11 +59,9 @@ async function saveUrls() {
       main_site_url: urlForm.main_site_url || null
     })
     toast.add({ title: 'URL-lar saqlandi', color: 'success' })
-  }
-  catch (e: any) {
+  } catch (e: any) {
     toast.add({ title: e?.data?.message ?? 'Xatolik', color: 'error' })
-  }
-  finally {
+  } finally {
     urlSaving.value = false
   }
 }
@@ -77,7 +73,13 @@ async function saveUrls() {
       <UDashboardNavbar :ui="{ right: 'gap-3' }">
         <template #leading>
           <UDashboardSidebarCollapse />
-          <UButton to="/tenants" icon="i-lucide-arrow-left" color="neutral" variant="ghost" size="sm">
+          <UButton
+            to="/tenants"
+            icon="i-lucide-arrow-left"
+            color="neutral"
+            variant="ghost"
+            size="sm"
+          >
             Orqaga
           </UButton>
         </template>
@@ -122,7 +124,14 @@ async function saveUrls() {
                 <p class="text-gray-400 mt-1">{{ tenant.primary_domain }}</p>
               </div>
               <div class="flex gap-2">
-                <UButton :to="`https://${tenant.primary_domain}`" target="_blank" icon="i-lucide-external-link" color="neutral" variant="ghost" size="sm">
+                <UButton
+                  :to="`https://${tenant.primary_domain}`"
+                  target="_blank"
+                  icon="i-lucide-external-link"
+                  color="neutral"
+                  variant="ghost"
+                  size="sm"
+                >
                   Saytga o'tish
                 </UButton>
               </div>
@@ -132,11 +141,14 @@ async function saveUrls() {
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <!-- Stats -->
             <div class="lg:col-span-2 grid grid-cols-2 sm:grid-cols-3 gap-4">
-              <UCard v-for="stat in [
-                { label: 'O\'quvchilar', value: tenant.students_count, icon: 'i-lucide-graduation-cap', color: 'text-blue-600' },
-                { label: 'O\'qituvchilar', value: tenant.teachers_count, icon: 'i-lucide-users', color: 'text-purple-600' },
-                { label: 'Sinov tugashi', value: tenant.trial_ends_at?.slice(0, 10) ?? 'Cheksiz', icon: 'i-lucide-calendar', color: 'text-orange-600' },
-              ]" :key="stat.label">
+              <UCard
+                v-for="stat in [
+                  { label: 'O\'quvchilar', value: tenant.students_count, icon: 'i-lucide-graduation-cap', color: 'text-blue-600' },
+                  { label: 'O\'qituvchilar', value: tenant.teachers_count, icon: 'i-lucide-users', color: 'text-purple-600' },
+                  { label: 'Sinov tugashi', value: tenant.trial_ends_at?.slice(0, 10) ?? 'Cheksiz', icon: 'i-lucide-calendar', color: 'text-orange-600' }
+                ]"
+                :key="stat.label"
+              >
                 <div class="text-center">
                   <UIcon :name="stat.icon" :class="['w-6 h-6 mx-auto mb-1', stat.color]" />
                   <p class="text-lg font-bold">{{ stat.value }}</p>

@@ -24,8 +24,7 @@ export const useAuthStore = defineStore('auth', () => {
       )
       token.value = res.data.token
       user.value = res.data.user
-    }
-    finally {
+    } finally {
       loading.value = false
     }
   }
@@ -38,14 +37,13 @@ export const useAuthStore = defineStore('auth', () => {
         { headers: { Authorization: `Bearer ${token.value}` } }
       )
       user.value = res.data
-    }
-    catch {
+    } catch {
       token.value = null
       user.value = null
     }
   }
 
-  async function updateProfile(data: { name: string; email: string }) {
+  async function updateProfile(data: { name: string, email: string }) {
     const res = await $fetch<{ data: AdminUser }>(
       `${config.public.apiBase}/api/v1/central/auth/profile`,
       { method: 'PATCH', headers: authHeaders(), body: data }
@@ -54,7 +52,7 @@ export const useAuthStore = defineStore('auth', () => {
     return res.data
   }
 
-  async function changePassword(data: { current_password: string; password: string; password_confirmation: string }) {
+  async function changePassword(data: { current_password: string, password: string, password_confirmation: string }) {
     await $fetch(
       `${config.public.apiBase}/api/v1/central/auth/change-password`,
       { method: 'POST', headers: authHeaders(), body: data }
@@ -67,8 +65,7 @@ export const useAuthStore = defineStore('auth', () => {
         method: 'POST',
         headers: { Authorization: `Bearer ${token.value}` },
       })
-    }
-    catch {}
+    } catch {}
     token.value = null
     user.value = null
     await navigateTo('/login')

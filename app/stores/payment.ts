@@ -23,11 +23,11 @@ export interface TenantPayment {
 }
 
 export interface PaymentReport {
-  monthly: { month: string; total: number; count: number }[]
+  monthly: { month: string, total: number, count: number }[]
   total_confirmed: number
   total_pending: number
-  by_plan: { plan: string; total: number; count: number }[]
-  by_method: { payment_method: string; total: number; count: number }[]
+  by_plan: { plan: string, total: number, count: number }[]
+  by_method: { payment_method: string, total: number, count: number }[]
 }
 
 export const usePaymentStore = defineStore('payment', () => {
@@ -47,14 +47,13 @@ export const usePaymentStore = defineStore('payment', () => {
     loading.value = true
     try {
       const params = new URLSearchParams({ page: String(page), ...filters })
-      const res = await $fetch<{ data: TenantPayment[]; meta: typeof meta.value }>(
+      const res = await $fetch<{ data: TenantPayment[], meta: typeof meta.value }>(
         `${config.public.apiBase}/api/v1/central/payments?${params}`,
         { headers: headers() },
       )
       payments.value = res.data
       meta.value = res.meta
-    }
-    finally {
+    } finally {
       loading.value = false
     }
   }

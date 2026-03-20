@@ -73,13 +73,11 @@ async function submitCreate() {
     toast.add({ title: 'Markaz yaratildi', color: 'success' })
     createModalOpen.value = false
     await load()
-  }
-  catch (e: any) {
+  } catch (e: any) {
     const errors = e?.data?.errors
     const firstError = errors ? Object.values(errors as Record<string, string[]>).flat()[0] : null
     toast.add({ title: firstError ?? e?.data?.message ?? 'Xatolik', color: 'error' })
-  }
-  finally { saving.value = false }
+  } finally { saving.value = false }
 }
 
 async function submitEdit() {
@@ -97,13 +95,11 @@ async function submitEdit() {
     toast.add({ title: 'Markaz yangilandi', color: 'success' })
     editModalOpen.value = false
     await load()
-  }
-  catch (e: any) {
+  } catch (e: any) {
     const errors = e?.data?.errors
     const firstError = errors ? Object.values(errors as Record<string, string[]>).flat()[0] : null
     toast.add({ title: firstError ?? e?.data?.message ?? 'Xatolik', color: 'error' })
-  }
-  finally { saving.value = false }
+  } finally { saving.value = false }
 }
 
 async function confirmDelete() {
@@ -113,11 +109,9 @@ async function confirmDelete() {
     await tenantStore.deleteTenant(selectedTenant.value.id)
     toast.add({ title: "Markaz o'chirildi", color: 'success' })
     deleteModalOpen.value = false
-  }
-  catch (e: any) {
+  } catch (e: any) {
     toast.add({ title: e?.data?.message ?? 'Xatolik', color: 'error' })
-  }
-  finally { saving.value = false }
+  } finally { saving.value = false }
 }
 
 async function toggleStatus(tenant: Tenant) {
@@ -125,13 +119,11 @@ async function toggleStatus(tenant: Tenant) {
     if (tenant.status === 'active') {
       await tenantStore.suspendTenant(tenant.id)
       toast.add({ title: "Markaz to'xtatildi", color: 'warning' })
-    }
-    else {
+    } else {
       await tenantStore.activateTenant(tenant.id)
       toast.add({ title: 'Markaz faollashtirildi', color: 'success' })
     }
-  }
-  catch (e: any) {
+  } catch (e: any) {
     toast.add({ title: e?.data?.message ?? 'Xatolik', color: 'error' })
   }
 }
@@ -174,11 +166,28 @@ const planOptions = computed(() =>
       </UDashboardNavbar>
       <UDashboardToolbar>
         <template #left>
-          <UInput v-model="search" placeholder="Qidirish..." icon="i-lucide-search" class="w-48 lg:w-72" />
-          <USelect v-model="statusFilter" :items="statusOptions" value-key="value" label-key="label" class="w-40" />
+          <UInput
+            v-model="search"
+            placeholder="Qidirish..."
+            icon="i-lucide-search"
+            class="w-48 lg:w-72"
+          />
+          <USelect
+            v-model="statusFilter"
+            :items="statusOptions"
+            value-key="value"
+            label-key="label"
+            class="w-40"
+          />
         </template>
         <template #right>
-          <UButton icon="i-lucide-refresh-cw" color="neutral" variant="ghost" :loading="tenantStore.loading" @click="load" />
+          <UButton
+            icon="i-lucide-refresh-cw"
+            color="neutral"
+            variant="ghost"
+            :loading="tenantStore.loading"
+            @click="load"
+          />
         </template>
       </UDashboardToolbar>
     </template>
@@ -251,9 +260,27 @@ const planOptions = computed(() =>
                             @click="toggleStatus(tenant)"
                           />
                         </UTooltip>
-                        <UButton icon="i-lucide-pencil" color="neutral" variant="ghost" size="xs" @click="openEdit(tenant)" />
-                        <UButton :to="`/tenants/${tenant.id}`" icon="i-lucide-eye" color="neutral" variant="ghost" size="xs" />
-                        <UButton icon="i-lucide-trash-2" color="error" variant="ghost" size="xs" @click="openDelete(tenant)" />
+                        <UButton
+                          icon="i-lucide-pencil"
+                          color="neutral"
+                          variant="ghost"
+                          size="xs"
+                          @click="openEdit(tenant)"
+                        />
+                        <UButton
+                          :to="`/tenants/${tenant.id}`"
+                          icon="i-lucide-eye"
+                          color="neutral"
+                          variant="ghost"
+                          size="xs"
+                        />
+                        <UButton
+                          icon="i-lucide-trash-2"
+                          color="error"
+                          variant="ghost"
+                          size="xs"
+                          @click="openDelete(tenant)"
+                        />
                       </div>
                     </td>
                   </tr>
@@ -294,9 +321,27 @@ const planOptions = computed(() =>
               <div class="mt-3 flex items-center justify-between">
                 <p class="text-xs text-gray-400">{{ tenant.owner_name }}</p>
                 <div class="flex gap-1">
-                  <UButton icon="i-lucide-pencil" color="neutral" variant="ghost" size="xs" @click="openEdit(tenant)" />
-                  <UButton :to="`/tenants/${tenant.id}`" icon="i-lucide-eye" color="neutral" variant="ghost" size="xs" />
-                  <UButton icon="i-lucide-trash-2" color="error" variant="ghost" size="xs" @click="openDelete(tenant)" />
+                  <UButton
+                    icon="i-lucide-pencil"
+                    color="neutral"
+                    variant="ghost"
+                    size="xs"
+                    @click="openEdit(tenant)"
+                  />
+                  <UButton
+                    :to="`/tenants/${tenant.id}`"
+                    icon="i-lucide-eye"
+                    color="neutral"
+                    variant="ghost"
+                    size="xs"
+                  />
+                  <UButton
+                    icon="i-lucide-trash-2"
+                    color="error"
+                    variant="ghost"
+                    size="xs"
+                    @click="openDelete(tenant)"
+                  />
                 </div>
               </div>
             </UCard>
@@ -321,32 +366,66 @@ const planOptions = computed(() =>
         <template #header>
           <h3 class="font-semibold text-lg">Yangi O'quv Markaz</h3>
         </template>
-        <form @submit.prevent="submitCreate" class="space-y-4">
+        <form class="space-y-4" @submit.prevent="submitCreate">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <UFormField label="Markaz nomi" required class="sm:col-span-2">
-              <UInput v-model="form.name" placeholder="Muborak IELTS" required class="w-full" />
+              <UInput
+                v-model="form.name"
+                placeholder="Muborak IELTS"
+                required
+                class="w-full"
+              />
             </UFormField>
             <UFormField label="Subdomain" required>
-              <UInput v-model="form.subdomain" placeholder="muborak-ielts" required class="w-full" />
+              <UInput
+                v-model="form.subdomain"
+                placeholder="muborak-ielts"
+                required
+                class="w-full"
+              />
               <template #hint><span class="text-xs text-gray-400">muborak-ielts.epro.uz</span></template>
             </UFormField>
             <UFormField label="Custom domain">
               <UInput v-model="form.custom_domain" placeholder="muborak.uz" class="w-full" />
             </UFormField>
             <UFormField label="Admin ismi" required>
-              <UInput v-model="form.admin_name" placeholder="Sardor Aliyev" required class="w-full" />
+              <UInput
+                v-model="form.admin_name"
+                placeholder="Sardor Aliyev"
+                required
+                class="w-full"
+              />
             </UFormField>
             <UFormField label="Admin email" required>
-              <UInput v-model="form.admin_email" type="email" placeholder="sardor@mail.com" required class="w-full" />
+              <UInput
+                v-model="form.admin_email"
+                type="email"
+                placeholder="sardor@mail.com"
+                required
+                class="w-full"
+              />
             </UFormField>
             <UFormField label="Admin paroli" required>
-              <UInput v-model="form.admin_password" type="password" placeholder="min 8 belgi" required minlength="8" class="w-full" />
+              <UInput
+                v-model="form.admin_password"
+                type="password"
+                placeholder="min 8 belgi"
+                required
+                minlength="8"
+                class="w-full"
+              />
             </UFormField>
             <UFormField label="Telefon">
               <UInput v-model="form.owner_phone" placeholder="+998901234567" class="w-full" />
             </UFormField>
             <UFormField label="Tarif" required>
-              <USelect v-model="form.plan_id" :items="planOptions" value-key="value" label-key="label" class="w-full" />
+              <USelect
+                v-model="form.plan_id"
+                :items="planOptions"
+                value-key="value"
+                label-key="label"
+                class="w-full"
+              />
             </UFormField>
           </div>
           <div class="flex justify-end gap-3 pt-2">
@@ -366,7 +445,7 @@ const planOptions = computed(() =>
           <h3 class="font-semibold text-lg">Markazni tahrirlash</h3>
           <p class="text-sm text-gray-500 mt-1">{{ selectedTenant?.name }}</p>
         </template>
-        <form @submit.prevent="submitEdit" class="space-y-4">
+        <form class="space-y-4" @submit.prevent="submitEdit">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <UFormField label="Markaz nomi" required class="sm:col-span-2">
               <UInput v-model="form.name" required class="w-full" />
@@ -375,7 +454,13 @@ const planOptions = computed(() =>
               <UInput v-model="form.custom_domain" class="w-full" />
             </UFormField>
             <UFormField label="Tarif">
-              <USelect v-model="form.plan_id" :items="planOptions" value-key="value" label-key="label" class="w-full" />
+              <USelect
+                v-model="form.plan_id"
+                :items="planOptions"
+                value-key="value"
+                label-key="label"
+                class="w-full"
+              />
             </UFormField>
             <UFormField label="Admin ismi">
               <UInput v-model="form.admin_name" class="w-full" />

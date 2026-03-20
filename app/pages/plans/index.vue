@@ -66,13 +66,11 @@ async function submitCreate() {
     await planStore.createPlan({ ...form })
     toast.add({ title: 'Tarif yaratildi', color: 'success' })
     createModalOpen.value = false
-  }
-  catch (e: any) {
+  } catch (e: any) {
     const errors = e?.data?.errors
     const firstError = errors ? Object.values(errors as Record<string, string[]>).flat()[0] : null
     toast.add({ title: firstError ?? e?.data?.message ?? 'Xatolik', color: 'error' })
-  }
-  finally { saving.value = false }
+  } finally { saving.value = false }
 }
 
 async function submitEdit() {
@@ -82,13 +80,11 @@ async function submitEdit() {
     await planStore.updatePlan(selectedPlan.value.id, { ...form })
     toast.add({ title: 'Tarif yangilandi', color: 'success' })
     editModalOpen.value = false
-  }
-  catch (e: any) {
+  } catch (e: any) {
     const errors = e?.data?.errors
     const firstError = errors ? Object.values(errors as Record<string, string[]>).flat()[0] : null
     toast.add({ title: firstError ?? e?.data?.message ?? 'Xatolik', color: 'error' })
-  }
-  finally { saving.value = false }
+  } finally { saving.value = false }
 }
 
 async function confirmDelete() {
@@ -98,11 +94,9 @@ async function confirmDelete() {
     await planStore.deletePlan(selectedPlan.value.id)
     toast.add({ title: "Tarif o'chirildi", color: 'success' })
     deleteModalOpen.value = false
-  }
-  catch (e: any) {
+  } catch (e: any) {
     toast.add({ title: e?.data?.message ?? 'Xatolik', color: 'error' })
-  }
-  finally { saving.value = false }
+  } finally { saving.value = false }
 }
 
 function formatMoney(n: number | string) {
@@ -197,8 +191,20 @@ function formatLimit(n: number | undefined | null) {
               <div class="flex items-center justify-between">
                 <span class="text-xs text-gray-400">{{ plan.tenants_count ?? 0 }} ta markaz</span>
                 <div class="flex gap-1">
-                  <UButton icon="i-lucide-pencil" color="neutral" variant="ghost" size="xs" @click="openEdit(plan)" />
-                  <UButton icon="i-lucide-trash-2" color="error" variant="ghost" size="xs" @click="openDelete(plan)" />
+                  <UButton
+                    icon="i-lucide-pencil"
+                    color="neutral"
+                    variant="ghost"
+                    size="xs"
+                    @click="openEdit(plan)"
+                  />
+                  <UButton
+                    icon="i-lucide-trash-2"
+                    color="error"
+                    variant="ghost"
+                    size="xs"
+                    @click="openDelete(plan)"
+                  />
                 </div>
               </div>
             </div>
@@ -215,33 +221,68 @@ function formatLimit(n: number | undefined | null) {
         <template #header>
           <h3 class="font-semibold text-lg">Yangi Tarif Rejasi</h3>
         </template>
-        <form @submit.prevent="submitCreate" class="space-y-4">
+        <form class="space-y-4" @submit.prevent="submitCreate">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <UFormField label="Nomi" required class="sm:col-span-2">
-              <UInput v-model="form.name" placeholder="Basic, Pro, Premium..." required class="w-full" />
+              <UInput
+                v-model="form.name"
+                placeholder="Basic, Pro, Premium..."
+                required
+                class="w-full"
+              />
             </UFormField>
             <UFormField label="Narxi (so'm/oy)" required class="sm:col-span-2">
-              <UInput v-model.number="form.price" type="number" min="0" required class="w-full" />
+              <UInput
+                v-model.number="form.price"
+                type="number"
+                min="0"
+                required
+                class="w-full"
+              />
             </UFormField>
 
             <div class="sm:col-span-2">
               <p class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Limitlar</p>
               <div class="grid grid-cols-3 gap-3">
                 <UFormField label="O'quvchilar" required>
-                  <UInput v-model.number="form.features.max_students" type="number" min="-1" required class="w-full" />
+                  <UInput
+                    v-model.number="form.features.max_students"
+                    type="number"
+                    min="-1"
+                    required
+                    class="w-full"
+                  />
                 </UFormField>
                 <UFormField label="O'qituvchilar" required>
-                  <UInput v-model.number="form.features.max_teachers" type="number" min="-1" required class="w-full" />
+                  <UInput
+                    v-model.number="form.features.max_teachers"
+                    type="number"
+                    min="-1"
+                    required
+                    class="w-full"
+                  />
                 </UFormField>
                 <UFormField label="Guruhlar" required>
-                  <UInput v-model.number="form.features.max_groups" type="number" min="-1" required class="w-full" />
+                  <UInput
+                    v-model.number="form.features.max_groups"
+                    type="number"
+                    min="-1"
+                    required
+                    class="w-full"
+                  />
                 </UFormField>
               </div>
               <p class="text-xs text-gray-400 mt-1">-1 = cheksiz</p>
             </div>
 
             <UFormField label="Xotira hajmi" required>
-              <USelect v-model="form.features.storage_limit" :items="storageLimitOptions" value-key="value" label-key="label" class="w-full" />
+              <USelect
+                v-model="form.features.storage_limit"
+                :items="storageLimitOptions"
+                value-key="value"
+                label-key="label"
+                class="w-full"
+              />
             </UFormField>
 
             <div class="flex flex-col gap-2 justify-end pb-1">
@@ -266,33 +307,63 @@ function formatLimit(n: number | undefined | null) {
           <h3 class="font-semibold text-lg">Tarifni tahrirlash</h3>
           <p class="text-sm text-gray-500 mt-1">{{ selectedPlan?.name }}</p>
         </template>
-        <form @submit.prevent="submitEdit" class="space-y-4">
+        <form class="space-y-4" @submit.prevent="submitEdit">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <UFormField label="Nomi" required class="sm:col-span-2">
               <UInput v-model="form.name" required class="w-full" />
             </UFormField>
             <UFormField label="Narxi (so'm/oy)" required class="sm:col-span-2">
-              <UInput v-model.number="form.price" type="number" min="0" required class="w-full" />
+              <UInput
+                v-model.number="form.price"
+                type="number"
+                min="0"
+                required
+                class="w-full"
+              />
             </UFormField>
 
             <div class="sm:col-span-2">
               <p class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Limitlar</p>
               <div class="grid grid-cols-3 gap-3">
                 <UFormField label="O'quvchilar" required>
-                  <UInput v-model.number="form.features.max_students" type="number" min="-1" required class="w-full" />
+                  <UInput
+                    v-model.number="form.features.max_students"
+                    type="number"
+                    min="-1"
+                    required
+                    class="w-full"
+                  />
                 </UFormField>
                 <UFormField label="O'qituvchilar" required>
-                  <UInput v-model.number="form.features.max_teachers" type="number" min="-1" required class="w-full" />
+                  <UInput
+                    v-model.number="form.features.max_teachers"
+                    type="number"
+                    min="-1"
+                    required
+                    class="w-full"
+                  />
                 </UFormField>
                 <UFormField label="Guruhlar" required>
-                  <UInput v-model.number="form.features.max_groups" type="number" min="-1" required class="w-full" />
+                  <UInput
+                    v-model.number="form.features.max_groups"
+                    type="number"
+                    min="-1"
+                    required
+                    class="w-full"
+                  />
                 </UFormField>
               </div>
               <p class="text-xs text-gray-400 mt-1">-1 = cheksiz</p>
             </div>
 
             <UFormField label="Xotira hajmi" required>
-              <USelect v-model="form.features.storage_limit" :items="storageLimitOptions" value-key="value" label-key="label" class="w-full" />
+              <USelect
+                v-model="form.features.storage_limit"
+                :items="storageLimitOptions"
+                value-key="value"
+                label-key="label"
+                class="w-full"
+              />
             </UFormField>
 
             <div class="flex flex-col gap-2 justify-end pb-1">

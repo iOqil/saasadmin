@@ -38,13 +38,12 @@ export const usePlanStore = defineStore('plan', () => {
         { headers: headers() },
       )
       plans.value = res.data
-    }
-    finally {
+    } finally {
       loading.value = false
     }
   }
 
-  async function createPlan(data: { name: string; price: number; features: PlanFeatures; is_active: boolean }) {
+  async function createPlan(data: { name: string, price: number, features: PlanFeatures, is_active: boolean }) {
     const res = await $fetch<{ data: Plan }>(
       `${config.public.apiBase}/api/v1/central/plans`,
       { method: 'POST', headers: headers(), body: data },
@@ -53,7 +52,7 @@ export const usePlanStore = defineStore('plan', () => {
     return res.data
   }
 
-  async function updatePlan(id: number, data: Partial<{ name: string; price: number; features: PlanFeatures; is_active: boolean }>) {
+  async function updatePlan(id: number, data: Partial<{ name: string, price: number, features: PlanFeatures, is_active: boolean }>) {
     const res = await $fetch<{ data: Plan }>(
       `${config.public.apiBase}/api/v1/central/plans/${id}`,
       { method: 'PATCH', headers: headers(), body: data },

@@ -16,11 +16,9 @@ async function loadReport() {
     if (dateFrom.value) params.date_from = dateFrom.value
     if (dateTo.value) params.date_to = dateTo.value
     await paymentStore.fetchReport(params)
-  }
-  catch {
+  } catch {
     toast.add({ title: 'Hisobot yuklanmadi', color: 'error' })
-  }
-  finally {
+  } finally {
     loading.value = false
   }
 }
@@ -131,7 +129,6 @@ function barWidth(total: number) {
       </div>
 
       <div v-else-if="r" class="p-6 space-y-8">
-
         <!-- KPI Summary -->
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
           <UCard>
@@ -230,9 +227,9 @@ function barWidth(total: number) {
               <div v-for="item in r.by_method" :key="item.payment_method" class="flex items-center justify-between">
                 <div class="flex items-center gap-2">
                   <UIcon
-                    :name="item.payment_method === 'cash' ? 'i-lucide-banknote' :
-                           item.payment_method === 'transfer' ? 'i-lucide-arrow-left-right' :
-                           item.payment_method === 'card' ? 'i-lucide-credit-card' : 'i-lucide-more-horizontal'"
+                    :name="item.payment_method === 'cash' ? 'i-lucide-banknote'
+                      : item.payment_method === 'transfer' ? 'i-lucide-arrow-left-right'
+                        : item.payment_method === 'card' ? 'i-lucide-credit-card' : 'i-lucide-more-horizontal'"
                     class="w-4 h-4 text-gray-400"
                   />
                   <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -249,7 +246,12 @@ function barWidth(total: number) {
         </div>
 
         <div class="flex justify-end">
-          <UButton to="/payments" trailing-icon="i-lucide-arrow-right" variant="ghost" color="neutral">
+          <UButton
+            to="/payments"
+            trailing-icon="i-lucide-arrow-right"
+            variant="ghost"
+            color="neutral"
+          >
             Barcha to'lovlarni ko'rish
           </UButton>
         </div>

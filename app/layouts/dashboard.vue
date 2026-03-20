@@ -114,11 +114,11 @@ const groups = computed(() => [{
         <!-- User menu -->
         <UDropdownMenu
           :items="[[
-            { type: 'label', label: auth.user?.name ?? 'Admin', avatar: { alt: auth.user?.name } },
+            { type: 'label', label: auth.user?.name ?? 'Admin', avatar: { alt: auth.user?.name } }
           ], [
-            { label: 'Profil', icon: 'i-lucide-user', to: '/settings' },
+            { label: 'Profil', icon: 'i-lucide-user', to: '/settings' }
           ], [
-            { label: 'Chiqish', icon: 'i-lucide-log-out', onSelect: auth.logout },
+            { label: 'Chiqish', icon: 'i-lucide-log-out', onSelect: auth.logout }
           ]]"
           :content="{ align: 'center', collisionPadding: 12 }"
           :ui="{ content: collapsed ? 'w-48' : 'w-(--reka-dropdown-menu-trigger-width)' }"

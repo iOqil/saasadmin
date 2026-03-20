@@ -127,19 +127,16 @@ async function submitAdd() {
     await paymentStore.createPayment(fd)
     toast.add({ title: "To'lov qo'shildi", color: 'success' })
     addModalOpen.value = false
-  }
-  catch (e: any) {
+  } catch (e: any) {
     toast.add({ title: e?.data?.message ?? 'Xatolik', color: 'error' })
-  }
-  finally { saving.value = false }
+  } finally { saving.value = false }
 }
 
 async function confirm(payment: TenantPayment) {
   try {
     await paymentStore.confirmPayment(payment.id)
     toast.add({ title: "To'lov tasdiqlandi", color: 'success' })
-  }
-  catch (e: any) {
+  } catch (e: any) {
     toast.add({ title: e?.data?.message ?? 'Xatolik', color: 'error' })
   }
 }
@@ -157,11 +154,9 @@ async function submitReject() {
     await paymentStore.rejectPayment(selectedPayment.value.id, rejectReason.value || undefined)
     toast.add({ title: "To'lov rad etildi", color: 'warning' })
     rejectModalOpen.value = false
-  }
-  catch (e: any) {
+  } catch (e: any) {
     toast.add({ title: e?.data?.message ?? 'Xatolik', color: 'error' })
-  }
-  finally { saving.value = false }
+  } finally { saving.value = false }
 }
 
 function openReceipt(payment: TenantPayment) {
@@ -184,19 +179,16 @@ async function submitUploadReceipt() {
     await paymentStore.uploadReceipt(selectedPayment.value.id, fd)
     toast.add({ title: 'Kvitansiya yuklandi', color: 'success' })
     receiptModalOpen.value = false
-  }
-  catch (e: any) {
+  } catch (e: any) {
     toast.add({ title: e?.data?.message ?? 'Xatolik', color: 'error' })
-  }
-  finally { saving.value = false }
+  } finally { saving.value = false }
 }
 
 async function remove(payment: TenantPayment) {
   try {
     await paymentStore.deletePayment(payment.id)
     toast.add({ title: "To'lov o'chirildi", color: 'success' })
-  }
-  catch (e: any) {
+  } catch (e: any) {
     toast.add({ title: e?.data?.message ?? 'Xatolik', color: 'error' })
   }
 }
@@ -240,7 +232,6 @@ function isImage(mime: string | null) {
 
     <template #body>
       <div class="p-6 space-y-5">
-
         <!-- Filters -->
         <div class="flex flex-wrap gap-3">
           <USelect
@@ -261,8 +252,18 @@ function isImage(mime: string | null) {
             class="w-56"
             @change="applyFilters"
           />
-          <UInput v-model="filterMonth" type="month" class="w-44" @change="applyFilters" />
-          <UButton color="neutral" variant="ghost" icon="i-lucide-refresh-cw" @click="applyFilters" />
+          <UInput
+            v-model="filterMonth"
+            type="month"
+            class="w-44"
+            @change="applyFilters"
+          />
+          <UButton
+            color="neutral"
+            variant="ghost"
+            icon="i-lucide-refresh-cw"
+            @click="applyFilters"
+          />
         </div>
 
         <!-- Summary cards -->
@@ -328,10 +329,29 @@ function isImage(mime: string | null) {
                   </td>
                   <td class="py-3 pr-4">
                     <div v-if="p.receipt_url" class="flex items-center gap-1">
-                      <UButton size="xs" color="neutral" variant="ghost" icon="i-lucide-eye" @click="openReceipt(p)" />
-                      <UButton size="xs" color="neutral" variant="ghost" icon="i-lucide-upload" @click="openUploadReceipt(p)" />
+                      <UButton
+                        size="xs"
+                        color="neutral"
+                        variant="ghost"
+                        icon="i-lucide-eye"
+                        @click="openReceipt(p)"
+                      />
+                      <UButton
+                        size="xs"
+                        color="neutral"
+                        variant="ghost"
+                        icon="i-lucide-upload"
+                        @click="openUploadReceipt(p)"
+                      />
                     </div>
-                    <UButton v-else size="xs" color="neutral" variant="ghost" icon="i-lucide-paperclip" @click="openUploadReceipt(p)">
+                    <UButton
+                      v-else
+                      size="xs"
+                      color="neutral"
+                      variant="ghost"
+                      icon="i-lucide-paperclip"
+                      @click="openUploadReceipt(p)"
+                    >
                       Yuklash
                     </UButton>
                   </td>
@@ -378,7 +398,9 @@ function isImage(mime: string | null) {
               :color="page === paymentStore.meta.current_page ? 'primary' : 'neutral'"
               :variant="page === paymentStore.meta.current_page ? 'solid' : 'ghost'"
               @click="goToPage(page)"
-            >{{ page }}</UButton>
+            >
+              {{ page }}
+            </UButton>
           </div>
         </UCard>
       </div>
@@ -392,7 +414,7 @@ function isImage(mime: string | null) {
         <template #header>
           <h3 class="font-semibold text-lg">Yangi Obuna To'lovi</h3>
         </template>
-        <form @submit.prevent="submitAdd" class="space-y-4">
+        <form class="space-y-4" @submit.prevent="submitAdd">
           <UFormField label="Markaz" required>
             <USelect
               v-model="form.tenant_id"
@@ -417,7 +439,12 @@ function isImage(mime: string | null) {
 
           <div class="grid grid-cols-2 gap-4">
             <UFormField label="Miqdor (so'm)" required>
-              <UInput v-model.number="form.amount" type="number" min="0" class="w-full" />
+              <UInput
+                v-model.number="form.amount"
+                type="number"
+                min="0"
+                class="w-full"
+              />
             </UFormField>
             <UFormField label="To'lov usuli" required>
               <USelect
@@ -435,19 +462,26 @@ function isImage(mime: string | null) {
           </UFormField>
 
           <UFormField label="Izoh">
-            <UTextarea v-model="form.notes" rows="2" class="w-full" placeholder="Ixtiyoriy izoh..." />
+            <UTextarea
+              v-model="form.notes"
+              rows="2"
+              class="w-full"
+              placeholder="Ixtiyoriy izoh..."
+            />
           </UFormField>
 
           <UFormField label="Kvitansiya (PDF yoki rasm)">
-            <div class="border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-lg p-4 text-center cursor-pointer hover:border-primary-400 transition-colors"
-              @click="receiptFileInput?.click()">
+            <div
+              class="border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-lg p-4 text-center cursor-pointer hover:border-primary-400 transition-colors"
+              @click="receiptFileInput?.click()"
+            >
               <input
                 ref="receiptFileInput"
                 type="file"
                 accept=".pdf,.jpg,.jpeg,.png,.webp"
                 class="hidden"
                 @change="onFileChange"
-              />
+              >
               <UIcon name="i-lucide-upload-cloud" class="text-3xl text-gray-400 mb-2" />
               <p v-if="receiptFile" class="text-sm font-medium text-primary-600">{{ receiptFile.name }}</p>
               <p v-else class="text-sm text-gray-400">PDF, JPG, PNG — max 10MB</p>
@@ -472,15 +506,17 @@ function isImage(mime: string | null) {
           <p class="text-sm text-gray-500 mt-0.5">{{ selectedPayment?.tenant_name }}</p>
         </template>
         <div class="space-y-4">
-          <div class="border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-lg p-6 text-center cursor-pointer hover:border-primary-400 transition-colors"
-            @click="receiptFileInput?.click()">
+          <div
+            class="border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-lg p-6 text-center cursor-pointer hover:border-primary-400 transition-colors"
+            @click="receiptFileInput?.click()"
+          >
             <input
               ref="receiptFileInput"
               type="file"
               accept=".pdf,.jpg,.jpeg,.png,.webp"
               class="hidden"
               @change="onFileChange"
-            />
+            >
             <UIcon name="i-lucide-upload-cloud" class="text-4xl text-gray-400 mb-2" />
             <p v-if="receiptFile" class="text-sm font-medium text-primary-600">{{ receiptFile.name }}</p>
             <p v-else class="text-sm text-gray-400">PDF, JPG, PNG — max 10MB</p>
@@ -521,7 +557,12 @@ function isImage(mime: string | null) {
           </UFormField>
           <div class="flex justify-end gap-3">
             <UButton color="neutral" variant="ghost" @click="rejectModalOpen = false">Bekor</UButton>
-            <UButton color="error" :loading="saving" icon="i-lucide-x" @click="submitReject">
+            <UButton
+              color="error"
+              :loading="saving"
+              icon="i-lucide-x"
+              @click="submitReject"
+            >
               Rad etish
             </UButton>
           </div>
@@ -549,13 +590,20 @@ function isImage(mime: string | null) {
                 color="neutral"
                 variant="ghost"
                 icon="i-lucide-external-link"
-              >Ko'rish</UButton>
+              >
+                Ko'rish
+              </UButton>
               <a
                 v-if="selectedPayment?.receipt_url"
                 :href="selectedPayment.receipt_url"
                 :download="selectedPayment.receipt_original_name ?? 'kvitansiya'"
               >
-                <UButton size="sm" color="neutral" variant="ghost" icon="i-lucide-download">Yuklash</UButton>
+                <UButton
+                  size="sm"
+                  color="neutral"
+                  variant="ghost"
+                  icon="i-lucide-download"
+                >Yuklash</UButton>
               </a>
             </div>
           </div>
@@ -619,7 +667,7 @@ function isImage(mime: string | null) {
               :src="selectedPayment.receipt_url"
               class="max-w-full rounded-lg border border-gray-100 dark:border-gray-700"
               alt="Kvitansiya"
-            />
+            >
             <div v-else class="flex items-center gap-3 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
               <UIcon name="i-lucide-file-text" class="text-3xl text-gray-400 shrink-0" />
               <div class="min-w-0">

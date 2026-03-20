@@ -34,13 +34,11 @@ async function submitProfile() {
   try {
     await auth.updateProfile({ name: profileForm.name, email: profileForm.email })
     toast.add({ title: 'Profil yangilandi', color: 'success' })
-  }
-  catch (e: any) {
+  } catch (e: any) {
     const errors = e?.data?.errors
     const first = errors ? Object.values(errors as Record<string, string[]>).flat()[0] : null
     toast.add({ title: first ?? e?.data?.message ?? 'Xatolik yuz berdi', color: 'error' })
-  }
-  finally {
+  } finally {
     profileSaving.value = false
   }
 }
@@ -63,13 +61,11 @@ async function submitPassword() {
     })
     toast.add({ title: 'Parol muvaffaqiyatli o\'zgartirildi', color: 'success' })
     Object.assign(passwordForm, { current_password: '', password: '', password_confirmation: '' })
-  }
-  catch (e: any) {
+  } catch (e: any) {
     const errors = e?.data?.errors
     const first = errors ? Object.values(errors as Record<string, string[]>).flat()[0] : null
     toast.add({ title: first ?? e?.data?.message ?? 'Xatolik yuz berdi', color: 'error' })
-  }
-  finally {
+  } finally {
     passwordSaving.value = false
   }
 }
@@ -85,7 +81,6 @@ async function submitPassword() {
 
     <template #body>
       <div class="p-6 max-w-2xl space-y-6">
-
         <!-- Profile Card -->
         <UCard>
           <template #header>
@@ -93,7 +88,14 @@ async function submitPassword() {
               <UAvatar :alt="auth.user?.name" size="lg" />
               <div>
                 <h3 class="font-semibold">Admin profili</h3>
-                <UBadge color="primary" variant="soft" size="xs" class="mt-1">{{ auth.user?.role }}</UBadge>
+                <UBadge
+                  color="primary"
+                  variant="soft"
+                  size="xs"
+                  class="mt-1"
+                >
+                  {{ auth.user?.role }}
+                </UBadge>
               </div>
             </div>
           </template>
@@ -104,7 +106,12 @@ async function submitPassword() {
                 <UInput v-model="profileForm.name" placeholder="To'liq ism" class="w-full" />
               </UFormField>
               <UFormField label="Email" required>
-                <UInput v-model="profileForm.email" type="email" placeholder="admin@epro.uz" class="w-full" />
+                <UInput
+                  v-model="profileForm.email"
+                  type="email"
+                  placeholder="admin@epro.uz"
+                  class="w-full"
+                />
               </UFormField>
             </div>
             <div class="flex justify-end">
@@ -177,12 +184,16 @@ async function submitPassword() {
               <p class="text-sm font-medium">Tizimdan chiqish</p>
               <p class="text-xs text-gray-400 mt-0.5">Sessiyani tugatadi va login sahifasiga qaytaradi</p>
             </div>
-            <UButton color="error" variant="soft" icon="i-lucide-log-out" @click="auth.logout()">
+            <UButton
+              color="error"
+              variant="soft"
+              icon="i-lucide-log-out"
+              @click="auth.logout()"
+            >
               Chiqish
             </UButton>
           </div>
         </UCard>
-
       </div>
     </template>
   </UDashboardPanel>

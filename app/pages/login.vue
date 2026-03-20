@@ -17,30 +17,24 @@ async function submit() {
   try {
     await auth.login(form.email, form.password)
     await navigateTo('/dashboard', { replace: true })
-  }
-  catch (e: any) {
+  } catch (e: any) {
     console.error('Login error:', e)
     const status = e?.status ?? e?.statusCode
     const data = e?.data
 
     if (!status) {
       errorMsg.value = `Server bilan aloqa yo'q. API: ${useRuntimeConfig().public.apiBase}`
-    }
-    else if (status === 422) {
+    } else if (status === 422) {
       const firstError = data?.errors ? Object.values(data.errors as Record<string, string[]>).flat()[0] : null
       errorMsg.value = firstError ?? data?.message ?? 'Email yoki parol noto\'g\'ri'
-    }
-    else if (status === 403) {
+    } else if (status === 403) {
       errorMsg.value = data?.message ?? 'Akkaunt faol emas'
-    }
-    else if (status === 404) {
+    } else if (status === 404) {
       errorMsg.value = `Endpoint topilmadi (404). URL tekshiring.`
-    }
-    else {
+    } else {
       errorMsg.value = `Xatolik ${status}: ${data?.message ?? e?.message ?? 'Noma\'lum xato'}`
     }
-  }
-  finally {
+  } finally {
     loading.value = false
   }
 }
@@ -60,7 +54,7 @@ async function submit() {
         </div>
 
         <UCard class="shadow-xl">
-          <form @submit.prevent="submit" class="space-y-5">
+          <form class="space-y-5" @submit.prevent="submit">
             <UFormField label="Email" required>
               <UInput
                 v-model="form.email"
