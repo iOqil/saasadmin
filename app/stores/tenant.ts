@@ -109,7 +109,7 @@ export const useTenantStore = defineStore('tenant', () => {
   async function updateTenant(id: string, data: Partial<Tenant>) {
     const res = await $fetch<{ data: Tenant }>(
       `${config.public.apiBase}/api/v1/central/tenants/${id}`,
-      { method: 'PUT', headers: auth.authHeaders(), body: data }
+      { method: 'PATCH', headers: auth.authHeaders(), body: data }
     )
     const idx = tenants.value.findIndex(t => t.id === id)
     if (idx !== -1) tenants.value[idx] = res.data
