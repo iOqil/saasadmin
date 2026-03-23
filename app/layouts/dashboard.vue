@@ -2,9 +2,14 @@
 import type { NavigationMenuItem } from '@nuxt/ui'
 
 const auth = useAuthStore()
+const registrationStore = useRegistrationStore()
 const open = ref(false)
 
-const links: NavigationMenuItem[][] = [[
+onMounted(() => {
+  registrationStore.fetchRegistrations('pending', 1)
+})
+
+const mainLinks = computed<NavigationMenuItem[]>(() => [
   {
     label: 'Dashboard',
     icon: 'i-lucide-layout-dashboard',
@@ -45,9 +50,14 @@ const links: NavigationMenuItem[][] = [[
     label: 'Arizalar',
     icon: 'i-lucide-inbox',
     to: '/registrations',
+    badge: registrationStore.pagination?.total
+      ? String(registrationStore.pagination.total)
+      : undefined,
     onSelect: () => { open.value = false },
   },
-], [
+])
+
+const bottomLinks: NavigationMenuItem[] = [
   {
     label: 'Sozlamalar',
     icon: 'i-lucide-settings',
@@ -59,12 +69,12 @@ const links: NavigationMenuItem[][] = [[
     to: 'https://docs.epro.uz',
     target: '_blank',
   },
-]]
+]
 
 const groups = computed(() => [{
   id: 'links',
   label: "Sahifalarga o'tish",
-  items: links.flat(),
+  items: [...mainLinks.value, ...bottomLinks],
 }])
 </script>
 
@@ -98,7 +108,7 @@ const groups = computed(() => [{
 
         <UNavigationMenu
           :collapsed="collapsed"
-          :items="links[0]"
+          :items="mainLinks"
           orientation="vertical"
           tooltip
           popover
@@ -106,7 +116,7 @@ const groups = computed(() => [{
 
         <UNavigationMenu
           :collapsed="collapsed"
-          :items="links[1]"
+          :items="bottomLinks"
           orientation="vertical"
           tooltip
           class="mt-auto"
