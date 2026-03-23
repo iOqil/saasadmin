@@ -115,6 +115,14 @@ async function submit() {
             <p class="text-gray-500 text-sm">
               Arizangiz ko'rib chiqish uchun yuborildi. Administrator tasdiqlashidan so'ng email orqali xabardor qilamiz.
             </p>
+            <UButton
+              class="mt-6"
+              to="/login"
+              size="lg"
+              block
+            >
+              Kirish sahifasiga o'tish
+            </UButton>
           </div>
         </UCard>
 
