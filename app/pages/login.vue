@@ -95,7 +95,12 @@ async function submit() {
           </form>
         </UCard>
 
-        <p class="text-center text-xs text-gray-400 mt-6">
+        <p class="text-center text-sm text-gray-500 mt-4">
+          Markazingiz yo'qmi?
+          <NuxtLink to="/register" class="text-primary-600 hover:underline font-medium">Ro'yxatdan o'tish</NuxtLink>
+        </p>
+
+        <p class="text-center text-xs text-gray-400 mt-4">
           EPRO SaaS Admin Panel © {{ new Date().getFullYear() }}
         </p>
       </div>
