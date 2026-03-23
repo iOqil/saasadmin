@@ -2,10 +2,7 @@
 import type { NavigationMenuItem } from '@nuxt/ui'
 
 const auth = useAuthStore()
-const router = useRouter()
-const route = useRoute()
 const open = ref(false)
-const { isNotificationsSlideoverOpen } = useDashboard()
 
 const links: NavigationMenuItem[][] = [[
   {

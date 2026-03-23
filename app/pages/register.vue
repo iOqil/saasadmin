@@ -29,7 +29,7 @@ function slugify(str: string) {
   return str
     .toLowerCase()
     .replace(/\s+/g, '-')
-    .replace(/[^a-z0-9\-]/g, '')
+    .replace(/[^a-z0-9-]/g, '')
     .replace(/-+/g, '-')
     .slice(0, 63)
 }
@@ -96,7 +96,12 @@ async function submit() {
           <form class="space-y-4" @submit.prevent="submit">
             <!-- Center info -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <UFormField label="Markaz nomi" required :error="errors.name" class="sm:col-span-2">
+              <UFormField
+                label="Markaz nomi"
+                required
+                :error="errors.name"
+                class="sm:col-span-2"
+              >
                 <UInput
                   v-model="form.name"
                   placeholder="Muborak IELTS"
@@ -182,7 +187,12 @@ async function submit() {
             </div>
 
             <div class="pt-2">
-              <UButton type="submit" block size="lg" :loading="loading">
+              <UButton
+                type="submit"
+                block
+                size="lg"
+                :loading="loading"
+              >
                 Ariza Yuborish
               </UButton>
               <p class="text-center text-xs text-gray-400 mt-3">
