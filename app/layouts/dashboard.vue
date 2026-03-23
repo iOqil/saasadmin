@@ -44,6 +44,12 @@ const links: NavigationMenuItem[][] = [[
     to: '/announcements',
     onSelect: () => { open.value = false },
   },
+  {
+    label: 'Arizalar',
+    icon: 'i-lucide-inbox',
+    to: '/registrations',
+    onSelect: () => { open.value = false },
+  },
 ], [
   {
     label: 'Sozlamalar',

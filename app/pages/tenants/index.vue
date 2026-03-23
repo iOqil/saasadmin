@@ -130,11 +130,11 @@ async function toggleStatus(tenant: Tenant) {
 
 type BadgeColor = 'error' | 'success' | 'warning' | 'neutral' | 'primary' | 'info'
 function statusColor(status: string): BadgeColor {
-  const m: Record<string, BadgeColor> = { active: 'success', trial: 'warning', suspended: 'error', expired: 'neutral' }
+  const m: Record<string, BadgeColor> = { active: 'success', trial: 'warning', suspended: 'error', expired: 'neutral', pending: 'info', rejected: 'error' }
   return m[status] ?? 'neutral'
 }
 function statusLabel(status: string) {
-  const m: Record<string, string> = { active: 'Faol', trial: 'Sinov', suspended: "To'xtatilgan", expired: 'Muddati tugagan' }
+  const m: Record<string, string> = { active: 'Faol', trial: 'Sinov', suspended: "To'xtatilgan", expired: 'Muddati tugagan', pending: 'Kutmoqda', rejected: 'Rad etilgan' }
   return m[status] ?? status
 }
 
