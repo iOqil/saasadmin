@@ -18,12 +18,44 @@ const success = ref(false)
 const errors = ref<Record<string, string>>({})
 const generalError = ref('')
 
+// Subdomain availability check
+const subdomainStatus = ref<'idle' | 'checking' | 'available' | 'taken' | 'invalid'>('idle')
+const subdomainMessage = ref('')
+let checkTimer: ReturnType<typeof setTimeout> | null = null
+
 // Auto-generate subdomain from center name
 watch(() => form.name, (val) => {
   if (!form.subdomain || form.subdomain === slugify(form.name.slice(0, -1))) {
     form.subdomain = slugify(val)
   }
 })
+
+watch(() => form.subdomain, (val) => {
+  if (checkTimer) clearTimeout(checkTimer)
+  if (!val) {
+    subdomainStatus.value = 'idle'
+    return
+  }
+  if (!/^[a-z0-9-]+$/.test(val)) {
+    subdomainStatus.value = 'invalid'
+    subdomainMessage.value = 'Faqat kichik harf, raqam va chiziq (-)'
+    return
+  }
+  subdomainStatus.value = 'checking'
+  checkTimer = setTimeout(() => checkSubdomain(val), 500)
+})
+
+async function checkSubdomain(subdomain: string) {
+  try {
+    const res = await $fetch<{ available: boolean, domain: string, message: string }>(
+      `${config.public.apiBase}/api/v1/central/auth/check-subdomain?subdomain=${subdomain}`
+    )
+    subdomainStatus.value = res.available ? 'available' : 'taken'
+    subdomainMessage.value = res.message
+  } catch {
+    subdomainStatus.value = 'idle'
+  }
+}
 
 function slugify(str: string) {
   return str
@@ -35,6 +67,7 @@ function slugify(str: string) {
 }
 
 async function submit() {
+  if (subdomainStatus.value === 'taken') return
   loading.value = true
   errors.value = {}
   generalError.value = ''
@@ -82,7 +115,6 @@ async function submit() {
             <p class="text-gray-500 text-sm">
               Arizangiz ko'rib chiqish uchun yuborildi. Administrator tasdiqlashidan so'ng email orqali xabardor qilamiz.
             </p>
-            <UButton class="mt-6" to="/login" variant="soft">Admin paneliga kirish</UButton>
           </div>
         </UCard>
 
@@ -94,7 +126,6 @@ async function submit() {
           </template>
 
           <form class="space-y-4" @submit.prevent="submit">
-            <!-- Center info -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <UFormField
                 label="Markaz nomi"
@@ -111,16 +142,37 @@ async function submit() {
                 />
               </UFormField>
 
-              <UFormField label="Subdomain" required :error="errors.subdomain">
+              <!-- Subdomain field with availability check -->
+              <UFormField
+                label="Subdomain"
+                required
+                :error="errors.subdomain || (subdomainStatus === 'invalid' ? subdomainMessage : '')"
+              >
                 <UInput
                   v-model="form.subdomain"
                   placeholder="muborak-ielts"
                   required
                   :disabled="loading"
                   class="w-full"
+                  :trailing-icon="subdomainStatus === 'checking' ? 'i-lucide-loader-2' : subdomainStatus === 'available' ? 'i-lucide-check-circle' : subdomainStatus === 'taken' ? 'i-lucide-x-circle' : undefined"
+                  :ui="{ trailingIcon: subdomainStatus === 'available' ? 'text-green-500' : subdomainStatus === 'taken' ? 'text-red-500' : 'animate-spin text-gray-400' }"
                 />
                 <template #hint>
-                  <span class="text-xs text-gray-400">{{ form.subdomain || 'sizning-markaz' }}.epro.uz</span>
+                  <span
+                    v-if="subdomainStatus === 'available'"
+                    class="text-xs text-green-600"
+                  >
+                    ✓ {{ subdomainMessage }}
+                  </span>
+                  <span
+                    v-else-if="subdomainStatus === 'taken'"
+                    class="text-xs text-red-500"
+                  >
+                    ✗ {{ subdomainMessage }}
+                  </span>
+                  <span v-else class="text-xs text-gray-400">
+                    {{ form.subdomain || 'sizning-markaz' }}.epro.uz
+                  </span>
                 </template>
               </UFormField>
 
@@ -170,7 +222,11 @@ async function submit() {
                 />
               </UFormField>
 
-              <UFormField label="Parolni tasdiqlash" required :error="errors.password_confirmation">
+              <UFormField
+                label="Parolni tasdiqlash"
+                required
+                :error="errors.password_confirmation"
+              >
                 <UInput
                   v-model="form.password_confirmation"
                   type="password"
@@ -182,7 +238,10 @@ async function submit() {
               </UFormField>
             </div>
 
-            <div v-if="generalError" class="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-sm text-red-600">
+            <div
+              v-if="generalError"
+              class="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-sm text-red-600"
+            >
               {{ generalError }}
             </div>
 
@@ -192,6 +251,7 @@ async function submit() {
                 block
                 size="lg"
                 :loading="loading"
+                :disabled="subdomainStatus === 'taken' || subdomainStatus === 'invalid'"
               >
                 Ariza Yuborish
               </UButton>
